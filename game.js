@@ -327,19 +327,37 @@ elements.submitForm.addEventListener('submit', (e) => {
     
     const name = elements.playerName.value.trim();
     const studentId = elements.studentId.value.trim();
+    const className = document.getElementById('className').value.trim();
 
-    if (name && studentId) {
-        // 这里可以添加实际的数据提交逻辑
-        // 例如：发送到服务器
-        console.log('提交信息:', { name, studentId });
-        
-        // 显示成功页面
-        switchScreen(screens.submit, screens.success);
-        
-        // 清空表单
-        elements.submitForm.reset();
+    if (name && studentId && className) {
+        // 跳转到问卷星收集信息
+        submitToWenjuanxing(name, studentId, className);
     }
 });
+
+// 提交到问卷星
+function submitToWenjuanxing(name, studentId, className) {
+    // 问卷星表单URL
+    const formUrl = 'https://www.wjx.cn/vm/OPhRBhi.aspx';
+    
+    // 构建参数（需要根据你的问卷字段调整）
+    const params = new URLSearchParams({
+        'q1': name,      // 姓名字段
+        'q2': studentId, // 学号字段
+        'q3': className, // 班级字段
+        'q4': new Date().toLocaleString() // 完成时间
+    });
+    
+    // 跳转到问卷星页面
+    const fullUrl = formUrl + '?' + params.toString();
+    window.open(fullUrl, '_blank');
+    
+    // 显示成功页面
+    switchScreen(screens.submit, screens.success);
+    
+    // 清空表单
+    elements.submitForm.reset();
+}
 
 // 失败后重试
 elements.retryBtn.addEventListener('click', () => {
