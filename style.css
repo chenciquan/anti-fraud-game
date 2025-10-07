@@ -1,0 +1,573 @@
+/* 全局重置和基础样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: relative;
+}
+
+/* 屏幕通用样式 */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.screen.active {
+    display: flex;
+    opacity: 1;
+}
+
+/* 开始页面 */
+#startScreen {
+    position: relative;
+}
+
+.background-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.background-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.content-container {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+}
+
+.game-title {
+    font-size: 3rem;
+    color: #ffffff;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.game-subtitle {
+    font-size: 1.1rem;
+    color: #f0f0f0;
+    margin-bottom: 40px;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+    line-height: 1.6;
+}
+
+/* 按钮通用样式 */
+.primary-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+    border: none;
+    padding: 16px 48px;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    font-weight: 600;
+    letter-spacing: 1px;
+    min-width: 200px;
+}
+
+.primary-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* 游戏页面 */
+#gameScreen {
+    background: linear-gradient(180deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 20px;
+}
+
+.game-container {
+    width: 100%;
+    max-width: 600px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.scenario-header {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.scenario-title {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+    width: 0%;
+}
+
+.dialogue-container {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.dialogue-box {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    min-height: 200px;
+}
+
+.dialogue-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #333;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.choice-container {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.choice-container.hidden {
+    display: none;
+}
+
+.choice-prompt {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.choice-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.choice-btn {
+    background: #ffffff;
+    border: 2px solid #667eea;
+    color: #667eea;
+    padding: 16px 24px;
+    font-size: 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+.choice-btn:active {
+    transform: scale(0.98);
+}
+
+.choice-btn.correct {
+    background: #4caf50;
+    border-color: #4caf50;
+    color: #ffffff;
+    animation: correctAnswer 0.5s ease;
+}
+
+.choice-btn.wrong {
+    background: #f44336;
+    border-color: #f44336;
+    color: #ffffff;
+    animation: wrongAnswer 0.5s ease;
+}
+
+.choice-btn.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+@keyframes correctAnswer {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes wrongAnswer {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.continue-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+    border: none;
+    padding: 16px 48px;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    font-weight: 600;
+    align-self: center;
+}
+
+.continue-btn.hidden {
+    display: none;
+}
+
+.continue-btn:active {
+    transform: scale(0.95);
+}
+
+/* 通关页面 */
+#victoryScreen {
+    background: linear-gradient(180deg, #ffecd2 0%, #fcb69f 100%);
+}
+
+.victory-container {
+    text-align: center;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+}
+
+.victory-icon {
+    font-size: 6rem;
+    margin-bottom: 20px;
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.victory-title {
+    font-size: 2.2rem;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.victory-message {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.victory-subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+/* 信息提交页面 */
+#submitScreen {
+    background: linear-gradient(180deg, #a8edea 0%, #fed6e3 100%);
+}
+
+.submit-container {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.submit-title {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.submit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 1rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.form-group input {
+    padding: 14px 16px;
+    font-size: 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    transition: border-color 0.3s ease;
+    background: #f9f9f9;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #667eea;
+    background: #ffffff;
+}
+
+/* 提交成功页面 */
+#successScreen {
+    background: linear-gradient(180deg, #d4fc79 0%, #96e6a1 100%);
+}
+
+.success-container {
+    text-align: center;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+}
+
+.success-icon {
+    font-size: 6rem;
+    margin-bottom: 20px;
+}
+
+.success-title {
+    font-size: 2.2rem;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.success-message {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+/* 失败页面 */
+#failScreen {
+    background: linear-gradient(180deg, #ff9a9e 0%, #fecfef 100%);
+}
+
+.fail-container {
+    text-align: center;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+}
+
+.fail-icon {
+    font-size: 6rem;
+    margin-bottom: 20px;
+}
+
+.fail-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.fail-message {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 40px;
+    line-height: 1.6;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 15px;
+}
+
+/* 响应式设计 - 小屏幕 */
+@media (max-width: 375px) {
+    .game-title {
+        font-size: 2.5rem;
+    }
+
+    .game-subtitle {
+        font-size: 1rem;
+    }
+
+    .primary-btn {
+        padding: 14px 36px;
+        font-size: 1.1rem;
+        min-width: 180px;
+    }
+
+    .scenario-title {
+        font-size: 1.3rem;
+    }
+
+    .dialogue-text {
+        font-size: 1rem;
+    }
+
+    .choice-btn {
+        font-size: 0.95rem;
+        padding: 14px 20px;
+    }
+
+    .victory-title,
+    .fail-title {
+        font-size: 1.8rem;
+    }
+
+    .submit-title {
+        font-size: 1.5rem;
+    }
+}
+
+/* 响应式设计 - 中等屏幕 */
+@media (min-width: 376px) and (max-width: 768px) {
+    .game-title {
+        font-size: 2.8rem;
+    }
+}
+
+/* 响应式设计 - 大屏幕（平板横屏等） */
+@media (min-width: 769px) {
+    .game-title {
+        font-size: 3.5rem;
+    }
+
+    .content-container,
+    .victory-container,
+    .fail-container,
+    .success-container {
+        max-width: 600px;
+    }
+}
+
+/* 确保竖屏体验 */
+@media (orientation: landscape) and (max-height: 500px) {
+    .game-title {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+
+    .game-subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+    }
+
+    .primary-btn {
+        padding: 12px 32px;
+        font-size: 1rem;
+    }
+
+    .victory-icon,
+    .success-icon,
+    .fail-icon {
+        font-size: 4rem;
+    }
+
+    #gameScreen {
+        padding: 10px;
+    }
+
+    .scenario-header {
+        padding: 15px;
+        margin-bottom: 10px;
+    }
+
+    .dialogue-box {
+        padding: 15px;
+        min-height: 150px;
+    }
+}
+
+/* 防止文本选择和长按效果（提升移动端体验） */
+button, .choice-btn {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* 滚动条样式 */
+.dialogue-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dialogue-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.dialogue-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.dialogue-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
