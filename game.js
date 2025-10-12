@@ -1,3 +1,30 @@
+// ==================== LeanCloud 配置 ====================
+// 请在 LeanCloud 控制台获取以下信息并替换
+const LEANCLOUD_APP_ID = 'xNq8tlso75gazKUyWOKjxklG-gzGzoHsz';      // 替换为你的 App ID
+const LEANCLOUD_APP_KEY = '9RhjZnWLbjWuZU5uXxEghUV2';    // 替换为你的 App Key（注意：要用 App Key，不是 Master Key）
+const LEANCLOUD_SERVER_URL = 'https://xnq8tlso.lc-cn-n1-shared.com'; // 替换为你的 Server URL
+
+// 初始化 LeanCloud
+console.log('正在初始化 LeanCloud...');
+console.log('App ID:', LEANCLOUD_APP_ID);
+console.log('Server URL:', LEANCLOUD_SERVER_URL);
+
+if (typeof AV !== 'undefined') {
+    try {
+        AV.init({
+            appId: LEANCLOUD_APP_ID,
+            appKey: LEANCLOUD_APP_KEY,
+            serverURL: LEANCLOUD_SERVER_URL
+        });
+        console.log('✅ LeanCloud 初始化成功！');
+    } catch (error) {
+        console.error('❌ LeanCloud 初始化失败：', error);
+    }
+} else {
+    console.error('❌ LeanCloud SDK 未加载');
+}
+
+// ==================== 游戏数据 ====================
 // 游戏数据 - 诈骗场景
 const gameScenarios = [
     {
@@ -191,6 +218,9 @@ const elements = {
     submitForm: document.getElementById('submitForm'),
     playerName: document.getElementById('playerName'),
     studentId: document.getElementById('studentId'),
+    submitBtn: document.getElementById('submitBtn'),
+    submitBtnText: document.getElementById('submitBtnText'),
+    submitBtnLoading: document.getElementById('submitBtnLoading'),
     failMessage: document.getElementById('failMessage'),
     retryBtn: document.getElementById('retryBtn'),
     restartBtn: document.getElementById('restartBtn')
@@ -316,53 +346,67 @@ elements.continueBtn.addEventListener('click', () => {
     loadScenario(currentScenarioIndex + 1);
 });
 
-// 通关后提交信息按钮
+// 失败后重试 - 从当前错误的题目重新开始
+elements.retryBtn.addEventListener('click', () => {
+    switchScreen(screens.fail, screens.game);
+    loadScenario(currentScenarioIndex);
+});
+
+// 通关后填写个人信息
 elements.submitInfoBtn.addEventListener('click', () => {
     switchScreen(screens.victory, screens.submit);
 });
 
-// 表单提交
-elements.submitForm.addEventListener('submit', (e) => {
+// 表单提交到 LeanCloud
+elements.submitForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
     const name = elements.playerName.value.trim();
     const studentId = elements.studentId.value.trim();
     const className = document.getElementById('className').value.trim();
 
-    if (name && studentId && className) {
-        // 跳转到问卷星收集信息
-        submitToWenjuanxing(name, studentId, className);
+    if (!name || !studentId || !className) {
+        alert('请填写完整信息！');
+        return;
     }
-});
 
-// 提交到问卷星
-function submitToWenjuanxing(name, studentId, className) {
-    // 问卷星表单URL
-    const formUrl = 'https://www.wjx.cn/vm/OPhRBhi.aspx';
-    
-    // 构建参数（需要根据你的问卷字段调整）
-    const params = new URLSearchParams({
-        'q1': name,      // 姓名字段
-        'q2': studentId, // 学号字段
-        'q3': className, // 班级字段
-        'q4': new Date().toLocaleString() // 完成时间
-    });
-    
-    // 跳转到问卷星页面
-    const fullUrl = formUrl + '?' + params.toString();
-    window.open(fullUrl, '_blank');
-    
-    // 显示成功页面
-    switchScreen(screens.submit, screens.success);
-    
-    // 清空表单
-    elements.submitForm.reset();
-}
+    // 显示加载状态
+    elements.submitBtn.disabled = true;
+    elements.submitBtnText.classList.add('hidden');
+    elements.submitBtnLoading.classList.remove('hidden');
 
-// 失败后重试
-elements.retryBtn.addEventListener('click', () => {
-    switchScreen(screens.fail, screens.game);
-    loadScenario(0);
+    try {
+        // 创建数据对象
+        const GameRecord = AV.Object.extend('GameRecords');
+        const record = new GameRecord();
+
+        // 设置数据
+        record.set('name', name);
+        record.set('studentId', studentId);
+        record.set('className', className);
+        record.set('completedAt', new Date());
+        record.set('gameVersion', '1.0');
+
+        // 保存到 LeanCloud
+        await record.save();
+
+        console.log('数据提交成功！');
+        
+        // 清空表单
+        elements.submitForm.reset();
+        
+        // 显示成功页面
+        switchScreen(screens.submit, screens.success);
+
+    } catch (error) {
+        console.error('提交失败：', error);
+        alert('提交失败，请重试！错误信息：' + error.message);
+    } finally {
+        // 恢复按钮状态
+        elements.submitBtn.disabled = false;
+        elements.submitBtnText.classList.remove('hidden');
+        elements.submitBtnLoading.classList.add('hidden');
+    }
 });
 
 // 成功后重新开始

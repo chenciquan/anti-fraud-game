@@ -294,6 +294,14 @@ body {
     max-width: 500px;
 }
 
+.victory-content-box {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 25px;
+    padding: 40px 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+}
+
 .victory-icon {
     font-size: 6rem;
     margin-bottom: 20px;
@@ -322,56 +330,102 @@ body {
 .victory-subtitle {
     font-size: 1rem;
     color: #666;
-    margin-bottom: 40px;
+    margin-bottom: 25px;
     line-height: 1.6;
 }
 
-/* 信息提交页面 */
+.victory-reward {
+    background: linear-gradient(135deg, #ffd89b 0%, #764ba2 100%);
+    border-radius: 15px;
+    padding: 20px 25px;
+    margin: 25px 0 30px 0;
+    box-shadow: 0 6px 20px rgba(118, 75, 162, 0.3);
+    transform: translateY(0);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.victory-reward:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(118, 75, 162, 0.4);
+}
+
+.reward-text {
+    font-size: 1.1rem;
+    color: #ffffff;
+    font-weight: 600;
+    line-height: 1.6;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    margin: 0;
+}
+
+/* 信息填写页面 */
 #submitScreen {
     background: linear-gradient(180deg, #a8edea 0%, #fed6e3 100%);
 }
 
 .submit-container {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 30px;
+    text-align: center;
+    padding: 20px;
     width: 90%;
     max-width: 500px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.submit-content-box {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 25px;
+    padding: 40px 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
 }
 
 .submit-title {
     font-size: 1.8rem;
     color: #333;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     text-align: center;
     font-weight: 600;
+}
+
+.submit-subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 30px;
+    text-align: center;
+    line-height: 1.6;
 }
 
 .submit-form {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 20px;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
+    text-align: left;
 }
 
 .form-group label {
     font-size: 1rem;
     color: #555;
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.label-icon {
+    font-size: 1.2rem;
 }
 
 .form-group input {
     padding: 14px 16px;
     font-size: 1rem;
     border: 2px solid #e0e0e0;
-    border-radius: 10px;
-    transition: border-color 0.3s ease;
+    border-radius: 12px;
+    transition: all 0.3s ease;
     background: #f9f9f9;
 }
 
@@ -379,6 +433,24 @@ body {
     outline: none;
     border-color: #667eea;
     background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-group input::placeholder {
+    color: #aaa;
+}
+
+.btn-loading {
+    display: inline;
+}
+
+.btn-loading.hidden {
+    display: none;
+}
+
+#submitBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 /* 提交成功页面 */
@@ -393,9 +465,24 @@ body {
     max-width: 500px;
 }
 
+.success-content-box {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 25px;
+    padding: 40px 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+}
+
 .success-icon {
     font-size: 6rem;
     margin-bottom: 20px;
+    animation: scaleIn 0.5s ease;
+}
+
+@keyframes scaleIn {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
 }
 
 .success-title {
@@ -408,7 +495,14 @@ body {
 .success-message {
     font-size: 1.2rem;
     color: #555;
-    margin-bottom: 40px;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.success-subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 35px;
     line-height: 1.6;
 }
 
@@ -476,12 +570,23 @@ body {
     }
 
     .victory-title,
+    .success-title,
     .fail-title {
         font-size: 1.8rem;
     }
 
     .submit-title {
         font-size: 1.5rem;
+    }
+
+    .reward-text {
+        font-size: 1rem;
+    }
+
+    .victory-content-box,
+    .submit-content-box,
+    .success-content-box {
+        padding: 30px 20px;
     }
 }
 
@@ -500,8 +605,9 @@ body {
 
     .content-container,
     .victory-container,
-    .fail-container,
-    .success-container {
+    .submit-container,
+    .success-container,
+    .fail-container {
         max-width: 600px;
     }
 }
@@ -527,6 +633,12 @@ body {
     .success-icon,
     .fail-icon {
         font-size: 4rem;
+    }
+
+    .victory-content-box,
+    .submit-content-box,
+    .success-content-box {
+        padding: 25px 15px;
     }
 
     #gameScreen {
