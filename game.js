@@ -30,9 +30,11 @@ const gameScenarios = [
     {
         id: 1,
         title: "场景一：游戏充值陷阱",
-        dialogue: `你正在玩一款热门手机游戏。
+        sceneName: "场景一：校门",
+        backgroundImage: "img/map/xiaomen.png",
+        dialogue: `你刚刚走到校门口，准备回宿舍。
 
-突然，你收到一条私信：
+低头看手机时，正在玩一款热门游戏，突然收到一条私信：
 "亲爱的玩家，恭喜你被选中参加我们的充值优惠活动！现在充值100元可获得价值500元的游戏道具和钻石！"
 
 "活动仅限今天，名额有限！请立即添加客服QQ：123456789 进行充值，我们提供最优惠的价格！"
@@ -61,14 +63,16 @@ const gameScenarios = [
     {
         id: 2,
         title: "场景二：代考诈骗",
-        dialogue: `期末考试临近，你有一门课程复习得不太好，心里有些担心。
+        sceneName: "场景二：沉毅广场",
+        backgroundImage: "img/map/chenyiguangchang.png",
+        dialogue: `期末考试临近，你坐在沉毅广场的长椅上，焦虑地翻看着复习资料，有一门课程复习得不太好，心里很担心。
 
-这时，你在校园论坛看到一条帖子：
+这时，旁边经过一个陌生人，递给你一张小卡片后匆匆离开。卡片上写着：
 "专业团队提供各科考试代考服务，保证通过！已帮助数百名同学顺利拿到学分。"
 
-"我们有内部资源，可以提前获取考题。只需支付800元，就能轻松过关，绝对安全可靠！"
+"我们有内部资源，可以提前获取考题。只需支付800元，就能轻松过关，绝对安全可靠！联系微信：xxxxx"
 
-你的室友说："我有个朋友就找过他们，好像还挺靠谱的。"
+你的室友恰好路过，凑过来看了一眼说："我有个朋友就找过他们，好像还挺靠谱的。"
 
 你会怎么选择？`,
         choices: [
@@ -92,9 +96,11 @@ const gameScenarios = [
     {
         id: 3,
         title: "场景三：网络兼职刷单",
-        dialogue: `暑假到了，你想找份兼职赚点零花钱。
+        sceneName: "场景三：体育馆",
+        backgroundImage: "img/map/tiyugaun.png",
+        dialogue: `你刚在体育馆打完球，坐在场边休息，拿出手机刷社交软件。暑假快到了，你想找份兼职赚点零花钱。
 
-在网上看到一条招聘信息：
+突然看到一条招聘信息：
 "招聘网络兼职，工作轻松，时间自由！只需在家动动手指，给网店刷单提高信誉度即可。"
 
 "每单佣金5-50元，多劳多得！日赚300元不是梦！"
@@ -125,9 +131,11 @@ const gameScenarios = [
     {
         id: 4,
         title: "场景四：冒充客服退款",
-        dialogue: `你刚在网上买了一件衣服。
+        sceneName: "场景四：图书馆",
+        backgroundImage: "img/map/tushuguan.png",
+        dialogue: `你正在图书馆自习室安静地学习，昨天刚在网上买了一件衣服。
 
-第二天，你接到一个自称是购物平台客服的电话：
+突然，手机震动了一下，你悄悄接起电话走到楼道里。对方自称是购物平台客服：
 "您好，我是XX购物平台客服。您昨天购买的商品由于质量问题需要召回，我们将为您办理退款并额外赔偿50元。"
 
 "为了确保退款顺利到账，请您打开支付宝/微信，我来指导您操作。"
@@ -158,9 +166,11 @@ const gameScenarios = [
     {
         id: 5,
         title: "场景五：冒充公检法",
-        dialogue: `你正在上课，手机突然响了。
+        sceneName: "场景五：天宝阁",
+        backgroundImage: "img/map/tianbaoge.png",
+        dialogue: `你漫步在天宝阁附近，欣赏着充满历史的建筑，突然手机响了起来。
 
-接通后，对方严肃地说：
+接通后，对方语气严肃地说：
 "你好，我是XX市公安局的警官，你的身份证涉嫌一起洗钱案件，现在需要配合调查。"
 
 "为了证明你的清白，需要你将银行卡里的钱转到国家安全账户接受审查。"
@@ -169,7 +179,7 @@ const gameScenarios = [
 
 "请立即配合，否则将对你发出逮捕令！"
 
-对方语气严厉，让你感到害怕。
+对方语气严厉，让你感到害怕。周围同学熙熙攘攘，你不知所措。
 
 你会怎么做？`,
         choices: [
@@ -223,7 +233,10 @@ const elements = {
     submitBtnLoading: document.getElementById('submitBtnLoading'),
     failMessage: document.getElementById('failMessage'),
     retryBtn: document.getElementById('retryBtn'),
-    restartBtn: document.getElementById('restartBtn')
+    restartBtn: document.getElementById('restartBtn'),
+    sceneTransition: document.getElementById('sceneTransition'),
+    sceneNameText: document.getElementById('sceneNameText'),
+    gameContainer: document.querySelector('.game-container')
 };
 
 // 工具函数：切换屏幕
@@ -261,6 +274,56 @@ function updateProgress() {
     elements.progressFill.style.width = progress + '%';
 }
 
+// 场景过渡动画
+function playSceneTransition(scenario) {
+    return new Promise((resolve) => {
+        // 获取过渡元素
+        const transition = elements.sceneTransition;
+        const background = transition.querySelector('.scene-background');
+        const nameText = elements.sceneNameText;
+        
+        // 设置背景图片
+        background.style.backgroundImage = `url('${scenario.backgroundImage}')`;
+        
+        // 设置场景名称
+        nameText.textContent = scenario.sceneName;
+        
+        // 显示过渡层
+        transition.classList.add('active');
+        
+        // 重置动画类
+        background.classList.remove('fade-in');
+        nameText.classList.remove('show', 'hide');
+        
+        // 背景淡入动画
+        setTimeout(() => {
+            background.classList.add('fade-in');
+        }, 50);
+        
+        // 场景名称显示动画（延迟0.8秒，在背景淡入过程中）
+        setTimeout(() => {
+            nameText.classList.add('show');
+        }, 50);
+        
+        // 场景名称停留2秒后开始隐藏
+        setTimeout(() => {
+            nameText.classList.remove('show');
+            nameText.classList.add('hide');
+        }, 2800);
+        
+        // 场景名称隐藏完成后，过渡动画结束
+        setTimeout(() => {
+            transition.classList.remove('active');
+            
+            // 设置游戏页面的背景图片
+            screens.game.style.setProperty('--scene-bg-image', `url('${scenario.backgroundImage}')`);
+            screens.game.setAttribute('data-has-background', 'true');
+            
+            resolve();
+        }, 3600);
+    });
+}
+
 // 开始游戏
 elements.startBtn.addEventListener('click', () => {
     switchScreen(screens.start, screens.game);
@@ -277,6 +340,15 @@ async function loadScenario(index) {
 
     currentScenarioIndex = index;
     const scenario = gameScenarios[index];
+
+    // 隐藏游戏容器，准备播放过渡动画
+    elements.gameContainer.classList.add('hidden-for-transition');
+
+    // 播放场景过渡动画
+    await playSceneTransition(scenario);
+
+    // 显示游戏容器
+    elements.gameContainer.classList.remove('hidden-for-transition');
 
     // 更新标题和进度
     elements.scenarioTitle.textContent = scenario.title;
@@ -365,6 +437,12 @@ elements.submitForm.addEventListener('submit', async (e) => {
     const studentId = elements.studentId.value.trim();
     const className = document.getElementById('className').value.trim();
 
+    // 调试：打印收集到的数据
+    console.log('📝 收集到的数据：');
+    console.log('姓名:', name);
+    console.log('学号:', studentId);
+    console.log('班级:', className);
+
     if (!name || !studentId || !className) {
         alert('请填写完整信息！');
         return;
@@ -387,10 +465,19 @@ elements.submitForm.addEventListener('submit', async (e) => {
         record.set('completedAt', new Date());
         record.set('gameVersion', '1.0');
 
+        // 调试：打印即将保存的数据
+        console.log('💾 准备保存的数据：', {
+            name: name,
+            studentId: studentId,
+            className: className,
+            completedAt: new Date(),
+            gameVersion: '1.0'
+        });
+
         // 保存到 LeanCloud
         await record.save();
 
-        console.log('数据提交成功！');
+        console.log('✅ 数据提交成功！', record);
         
         // 清空表单
         elements.submitForm.reset();

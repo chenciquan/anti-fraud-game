@@ -16,14 +16,33 @@
             <div class="overlay"></div>
         </div>
         <div class="content-container">
-            <h1 class="game-title">反诈小游戏</h1>
-            <p class="game-subtitle">提高防诈骗意识，守护财产安全</p>
-            <button id="startBtn" class="primary-btn">开始游戏</button>
+            <div class="game-slogan">🛡️ 守护钱包 拒绝诈骗 🛡️</div>
+            <h1 class="game-title">反诈闯关大挑战</h1>
+            <div class="game-info">
+                <div class="info-item">
+                    <span class="info-icon">🎯</span>
+                    <span class="info-text">共有 5 个关卡等你挑战</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">⚡</span>
+                    <span class="info-text">识破诈骗套路，成为反诈达人</span>
+                </div>
+            </div>
+            <p class="game-challenge">你准备好了吗？</p>
+            <button id="startBtn" class="primary-btn start-game-btn">🚀 开始闯关</button>
         </div>
     </div>
 
     <!-- 游戏页面 -->
     <div id="gameScreen" class="screen">
+        <!-- 场景过渡动画 -->
+        <div id="sceneTransition" class="scene-transition">
+            <div class="scene-background"></div>
+            <div class="scene-name-container">
+                <h2 id="sceneNameText" class="scene-name-text"></h2>
+            </div>
+        </div>
+        
         <div class="game-container">
             <!-- 场景标题 -->
             <div class="scenario-header">
@@ -53,6 +72,10 @@
 
     <!-- 通关页面 -->
     <div id="victoryScreen" class="screen">
+        <div class="victory-background">
+            <img src="img/map/jieshu.png" alt="通关背景" class="victory-bg-image">
+            <div class="victory-overlay"></div>
+        </div>
         <div class="victory-container">
             <div class="victory-content-box">
                 <div class="victory-icon">🎉</div>
@@ -69,6 +92,10 @@
 
     <!-- 信息填写页面 -->
     <div id="submitScreen" class="screen">
+        <div class="submit-background">
+            <img src="img/map/jieshu.png" alt="填写信息背景" class="submit-bg-image">
+            <div class="submit-overlay"></div>
+        </div>
         <div class="submit-container">
             <div class="submit-content-box">
                 <h2 class="submit-title">📝 填写个人信息</h2>
