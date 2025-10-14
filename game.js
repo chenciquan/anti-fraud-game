@@ -31,7 +31,7 @@ const gameScenarios = [
         id: 1,
         title: "场景一：游戏充值陷阱",
         sceneName: "场景一：校门",
-        backgroundImage: "img/map/xiaomen.png",
+        backgroundImage: "img/map/xiaomen.jpg",
         dialogue: `你刚刚走到校门口，准备回宿舍。
 
 低头看手机时，正在玩一款热门游戏，突然收到一条私信：
@@ -64,7 +64,7 @@ const gameScenarios = [
         id: 2,
         title: "场景二：代考诈骗",
         sceneName: "场景二：沉毅广场",
-        backgroundImage: "img/map/chenyiguangchang.png",
+        backgroundImage: "img/map/chenyiguangchang.jpg",
         dialogue: `期末考试临近，你坐在沉毅广场的长椅上，焦虑地翻看着复习资料，有一门课程复习得不太好，心里很担心。
 
 这时，旁边经过一个陌生人，递给你一张小卡片后匆匆离开。卡片上写着：
@@ -97,7 +97,7 @@ const gameScenarios = [
         id: 3,
         title: "场景三：网络兼职刷单",
         sceneName: "场景三：体育馆",
-        backgroundImage: "img/map/tiyugaun.png",
+        backgroundImage: "img/map/tiyugaun.jpg",
         dialogue: `你刚在体育馆打完球，坐在场边休息，拿出手机刷社交软件。暑假快到了，你想找份兼职赚点零花钱。
 
 突然看到一条招聘信息：
@@ -132,7 +132,7 @@ const gameScenarios = [
         id: 4,
         title: "场景四：冒充客服退款",
         sceneName: "场景四：图书馆",
-        backgroundImage: "img/map/tushuguan.png",
+        backgroundImage: "img/map/tushuguan.jpg",
         dialogue: `你正在图书馆自习室安静地学习，昨天刚在网上买了一件衣服。
 
 突然，手机震动了一下，你悄悄接起电话走到楼道里。对方自称是购物平台客服：
@@ -167,7 +167,7 @@ const gameScenarios = [
         id: 5,
         title: "场景五：冒充公检法",
         sceneName: "场景五：天宝阁",
-        backgroundImage: "img/map/tianbaoge.png",
+        backgroundImage: "img/map/tianbaoge.jpg",
         dialogue: `你漫步在天宝阁附近，欣赏着充满历史的建筑，突然手机响了起来。
 
 接通后，对方语气严肃地说：
